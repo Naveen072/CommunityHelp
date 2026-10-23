@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — RedZone Help</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left"><span>An initiative for community welfare</span><a href="contact.html">Helpline: 1800-XXX-XXXX</a></div>
+    <div class="topbar-right"><a href="contact.html">Report an Issue</a><a href="#">हिंदी</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-2 4.5-9 9-9 9z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <div class="logo-text"><div class="logo-title">RedZone Help</div><div class="logo-sub">Community Response</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="tasks.html" class="nav-link">Tasks</a>
+      <a href="map.html" class="nav-link">Map</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="signin-link" id="nav-signin">Sign In</a>
+      <div id="nav-user" style="display:none; align-items:center; gap:10px;">
+        <span class="user-name" style="font-weight:600; color:#F1F5F9;"></span>
+        <button onclick="logout()" class="btn btn-outline-dark btn-sm">Logout</button>
+      </div>
+      <button class="menu-toggle" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F1F5F9" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="tasks.html" class="nav-link">Tasks</a>
+    <a href="map.html" class="nav-link">Map</a>
+    <a href="dashboard.html" class="nav-link">Dashboard</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+</header>
+
+<div class="page-head">
+  <h1>Welcome Back</h1>
+  <p>Sign in to your volunteer account</p>
+</div>
+
+<main class="section">
+  <div class="section-inner">
+    <div class="form-card">
+      <h2 class="form-title">Sign In</h2>
+      <p class="form-sub">Enter your details to continue</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
+        </div>
+
+        <div class="form-actions" style="justify-content:stretch;">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
+        </div>
+      </form>
+
+      <div class="form-footer">
+        Don't have an account? <a href="register.html">Register here</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <div>© 2025 RedZone Help. All rights reserved.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+document.getElementById('login-form').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+
+  if(!email || !password){
+    alert('Please enter both email and password.');
+    return;
+  }
+
+  // Simple demo login: accept any email/password
+  // In a real app, this would verify against a backend
+  const user = {
+    name: email.split('@')[0], // use part before @ as name
+    email: email,
+    loggedInAt: new Date().toISOString()
+  };
+
+  saveUser(user);
+  alert('Login successful! Redirecting to tasks...');
+  window.location.href = 'tasks.html';
+});
+</script>
+</body>
+</html>

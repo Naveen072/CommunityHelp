@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasks — RedZone Help</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+.task-icon-box{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid;}
+.task-icon-blood{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);}
+.task-icon-flood{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3);}
+.task-icon-medical{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);}
+.task-icon-edu{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.3);}
+.task-icon-community{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left"><span>An initiative for community welfare</span><a href="contact.html">Helpline: 1800-XXX-XXXX</a></div>
+    <div class="topbar-right"><a href="contact.html">Report an Issue</a><a href="#">हिंदी</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-2 4.5-9 9-9 9z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <div class="logo-text"><div class="logo-title">RedZone Help</div><div class="logo-sub">Community Response</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="tasks.html" class="nav-link active">Tasks</a>
+      <a href="map.html" class="nav-link">Map</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="signin-link" id="nav-signin">Sign In</a>
+      <a href="login.html" class="btn btn-gold btn-sm" id="nav-signin-btn">Become a Volunteer</a>
+      <div id="nav-user" style="display:none; align-items:center; gap:10px;">
+        <span class="user-name" style="font-weight:600; color:#F1F5F9;"></span>
+        <button onclick="logout()" class="btn btn-outline-dark btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page-head">
+  <h1>Available Tasks</h1>
+  <p>Browse local tasks that need your help. Accept, complete, and earn rewards.</p>
+</div>
+
+<div id="urgent-alert" style="display:none; background:linear-gradient(90deg,rgba(239,68,68,.15),rgba(239,68,68,.05)); border-top:1px solid rgba(239,68,68,.3); border-bottom:1px solid rgba(239,68,68,.3); padding:14px 24px;">
+  <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="font-size:20px;">🚨</span>
+      <div>
+        <div style="color:#FCA5A5; font-weight:700; font-size:14.5px;" id="urgent-text">Urgent tasks need help</div>
+        <div style="color:#94A3B8; font-size:13px;" id="urgent-sub">Click to see urgent tasks only</div>
+      </div>
+    </div>
+    <button onclick="showUrgent()" style="background:linear-gradient(135deg,#EF4444,#DC2626); color:#fff; border:none; padding:9px 18px; border-radius:8px; font-weight:600; font-size:13.5px; cursor:pointer; font-family:inherit;">Show Urgent →</button>
+  </div>
+</div>
+
+<main class="section">
+  <div class="section-inner">
+    <div class="filter-bar">
+      <input type="text" id="search-input" class="search-input" placeholder="Search tasks by name or location...">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="High">High</button>
+      <button class="filter-btn" data-filter="Medium">Medium</button>
+      <button class="filter-btn" data-filter="Low">Low</button>
+      <button class="filter-btn" data-filter="Blood Donation">🩸 Blood</button>
+      <button class="filter-btn" data-filter="Disaster Relief">🌊 Disaster</button>
+      <button class="filter-btn" data-filter="Medical Aid">🏥 Medical</button>
+      <button class="filter-btn" data-filter="Education">📚 Education</button>
+      <button class="filter-btn" data-filter="Community Support">🤝 Community</button>
+    </div>
+
+    <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="task-grid" id="tasks-container"></div>
+  </div>
+</main>
+
+<div class="modal-overlay" id="popup">
+  <div class="modal-box">
+    <h2 class="modal-title" id="popup-title">Task</h2>
+    <p class="modal-sub" id="popup-sub">Details</p>
+    <div id="popup-details" style="font-size:14px; color:#CBD5E1; line-height:1.7;"></div>
+    <div class="form-group" style="margin-top:16px;">
+      <label class="form-label">Optional Note</label>
+      <input type="text" id="popup-note" class="form-input" placeholder="Add a note...">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline-dark" onclick="closePopup()">Cancel</button>
+      <button class="btn btn-primary" id="accept-btn">Accept Task</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="proof-popup">
+  <div class="modal-box">
+    <h2 class="modal-title">Submit Proof</h2>
+    <p class="modal-sub">Upload a photo to complete the task.</p>
+    <div class="form-group">
+      <label class="form-label">Proof Image</label>
+      <input type="file" id="proof-file" class="form-input" accept="image/*">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline-dark" onclick="closeProof()">Cancel</button>
+      <button class="btn btn-primary" id="proof-submit-btn">Submit Proof</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <div>© 2025 RedZone Help. All rights reserved.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+
+  var currentFilter = 'all';
+  var currentTaskId = null;
+
+  function iconBoxClass(type){
+    var m = {
+      "Blood Donation":"task-icon-blood",
+      "Disaster Relief":"task-icon-flood",
+      "Medical Aid":"task-icon-medical",
+      "Education":"task-icon-edu",
+      "Community Support":"task-icon-community"
+    };
+    return m[type] || "task-icon-community";
+  }
+
+  function renderTasks(filter, search){
+    filter = filter || 'all';
+    search = search || '';
+
+    var tasks = loadTasks();
+    var container = document.getElementById('tasks-container');
+    container.innerHTML = '';
+
+    var filtered = tasks.filter(function(t){
+      if(filter !== 'all' && t.urgency !== filter && t.type !== filter) return false;
+      if(search){
+        var s = search.toLowerCase();
+        if(t.name.toLowerCase().indexOf(s) === -1 && t.location.toLowerCase().indexOf(s) === -1) return false;
+      }
+      return true;
+    });
+
+    if(filtered.length === 0){
+      container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:40px;">No tasks found.</p>';
+      updateProgress(tasks);
+      return;
+    }
+
+    var html = '';
+    filtered.forEach(function(task){
+      var bc = 'task-btn task-btn-accept';
+      var bt = 'Accept Task';
+      if(task.status === 'accepted'){ bc = 'task-btn task-btn-ongoing'; bt = 'Ongoing — Submit Proof'; }
+      if(task.status === 'completed'){ bc = 'task-btn task-btn-completed'; bt = 'Completed ✓'; }
+
+      html += '<div class="task-card ' + task.status + '" data-id="' + task.id + '">';
+      html += '<div class="task-head">';
+      html += '<div class="task-icon-box ' + iconBoxClass(task.type) + '">' + getTypeIcon(task.type) + '</div>';
+      html += '<div style="flex:1;">';
+      html += '<div class="task-name">' + task.name + '</div>';
+      html += '<div class="badge-row">';
+      html += '<span class="badge ' + getTypeBadgeClass(task.type) + '">' + task.type + '</span>';
+      html += '<span class="badge ' + getUrgencyBadgeClass(task.urgency) + '">' + task.urgency + '</span>';
+      if(task.blood) html += '<span class="badge badge-blood">Blood: ' + task.blood + '</span>';
+      html += '<span class="badge ' + getStatusBadgeClass(task.status) + '">' + task.status + '</span>';
+      html += '</div></div></div>';
+      html += '<div class="task-desc">' + task.desc + '</div>';
+      html += '<div class="task-loc">📍 ' + task.location + ' · Reward: <span style="color:#F5B700;font-weight:700;">₹' + (REWARDS[task.type] || 300) + '</span></div>';
+      html += '<button class="' + bc + '">' + bt + '</button>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+    updateProgress(tasks);
+  }
+
+  function updateProgress(tasks){
+    var total = tasks.length;
+    var done = tasks.filter(function(t){ return t.status === 'completed'; }).length;
+    document.getElementById('progress-fill').style.width = ((done / total) * 100) + '%';
+  }
+
+  function updateUrgentAlert(){
+    var tasks = loadTasks();
+    var urgent = tasks.filter(function(t){ return t.urgency === 'High' && t.status === 'pending'; });
+    var alert = document.getElementById('urgent-alert');
+    var text = document.getElementById('urgent-text');
+    var sub = document.getElementById('urgent-sub');
+
+    if(urgent.length > 0){
+      alert.style.display = 'block';
+      text.textContent = '🚨 ' + urgent.length + ' urgent task' + (urgent.length > 1 ? 's' : '') + ' need help right now!';
+      sub.textContent = 'These tasks require immediate attention';
+    } else {
+      alert.style.display = 'none';
+    }
+  }
+
+  window.showUrgent = function(){
+    currentFilter = 'High';
+    document.querySelectorAll('.filter-btn').forEach(function(b){
+      b.classList.remove('active');
+      if(b.dataset.filter === 'High') b.classList.add('active');
+    });
+    renderTasks('High', '');
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
+
+  window.closePopup = function(){ document.getElementById('popup').classList.remove('active'); };
+  window.closeProof = function(){ document.getElementById('proof-popup').classList.remove('active'); };
+
+  document.getElementById('accept-btn').addEventListener('click', function(){
+    var tasks = loadTasks();
+    var task = tasks.filter(function(t){ return t.id === currentTaskId; })[0];
+    if(!task) return;
+    task.status = 'accepted';
+    task.note = document.getElementById('popup-note').value;
+    saveTasks(tasks);
+    closePopup();
+    renderTasks(currentFilter, document.getElementById('search-input').value);
+    updateUrgentAlert();
+    alert('Task accepted: ' + task.name);
+  });
+
+  document.getElementById('proof-submit-btn').addEventListener('click', function(){
+    var f = document.getElementById('proof-file').files[0];
+    if(!f){ alert('Please upload a proof image.'); return; }
+    var tasks = loadTasks();
+    var task = tasks.filter(function(t){ return t.id === currentTaskId; })[0];
+    if(!task) return;
+    task.status = 'completed';
+    saveTasks(tasks);
+    addReward(REWARDS[task.type] || 300);
+    closeProof();
+    document.getElementById('proof-file').value = '';
+    renderTasks(currentFilter, document.getElementById('search-input').value);
+    updateUrgentAlert();
+    alert('Task completed! Reward: ₹' + (REWARDS[task.type] || 300));
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderTasks(currentFilter, document.getElementById('search-input').value);
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', function(e){
+    renderTasks(currentFilter, e.target.value);
+  });
+
+  document.getElementById('tasks-container').addEventListener('click', function(e){
+    var card = e.target.closest('.task-card');
+    if(!card) return;
+    if(e.target.tagName !== 'BUTTON') return;
+    var id = Number(card.dataset.id);
+    currentTaskId = id;
+    var tasks = loadTasks();
+    var task = tasks.filter(function(t){ return t.id === id; })[0];
+    if(!task) return;
+
+    if(task.status === 'completed'){ alert('Task already completed.'); return; }
+    if(task.status === 'accepted'){ document.getElementById('proof-popup').classList.add('active'); return; }
+
+    document.getElementById('popup-title').textContent = task.name;
+    document.getElementById('popup-sub').textContent = task.type;
+    document.getElementById('popup-details').innerHTML =
+      '<strong>Location:</strong> ' + task.location + '<br>' +
+      '<strong>Urgency:</strong> ' + task.urgency + '<br>' +
+      (task.blood ? '<strong>Blood Group:</strong> ' + task.blood + '<br>' : '') +
+      '<strong>Reward:</strong> <span style="color:#F5B700;font-weight:700;">₹' + (REWARDS[task.type] || 300) + '</span><br>' +
+      '<strong>Description:</strong> ' + task.desc;
+    document.getElementById('popup-note').value = '';
+    document.getElementById('popup').classList.add('active');
+  });
+
+  renderTasks('all', '');
+  updateUrgentAlert();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Map — RedZone Help</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left"><span>An initiative for community welfare</span><a href="contact.html">Helpline: 1800-XXX-XXXX</a></div>
+    <div class="topbar-right"><a href="contact.html">Report an Issue</a><a href="#">हिंदी</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-2 4.5-9 9-9 9z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <div class="logo-text"><div class="logo-title">RedZone Help</div><div class="logo-sub">Community Response</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="tasks.html" class="nav-link">Tasks</a>
+      <a href="map.html" class="nav-link active">Map</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="signin-link" id="nav-signin">Sign In</a>
+      <a href="login.html" class="btn btn-gold btn-sm" id="nav-signin-btn">Become a Volunteer</a>
+      <div id="nav-user" style="display:none; align-items:center; gap:10px;">
+        <span class="user-name" style="font-weight:600; color:#F1F5F9;"></span>
+        <button onclick="logout()" class="btn btn-outline-dark btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page-head">
+  <h1>Live Task Map</h1>
+  <p>All community tasks across India. Click any circle for details.</p>
+</div>
+
+<main class="section">
+  <div class="section-inner">
+
+    <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:16px; padding:16px 20px; background:#111C2E; border:1px solid #1F2D44; border-radius:12px;">
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#CBD5E1;"><span style="width:14px;height:14px;border-radius:50%;background:#EF4444;display:inline-block;"></span> Blood Donation</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#CBD5E1;"><span style="width:14px;height:14px;border-radius:50%;background:#3B82F6;display:inline-block;"></span> Disaster Relief</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#CBD5E1;"><span style="width:14px;height:14px;border-radius:50%;background:#22C55E;display:inline-block;"></span> Medical Aid</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#CBD5E1;"><span style="width:14px;height:14px;border-radius:50%;background:#A855F7;display:inline-block;"></span> Education</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#CBD5E1;"><span style="width:14px;height:14px;border-radius:50%;background:#F59E0B;display:inline-block;"></span> Community Support</div>
+    </div>
+
+    <div class="filter-bar" id="mapFilters">
+      <button class="filter-btn active" data-filter="all">All Tasks</button>
+      <button class="filter-btn" data-filter="Blood Donation">🩸 Blood</button>
+      <button class="filter-btn" data-filter="Disaster Relief">🌊 Disaster</button>
+      <button class="filter-btn" data-filter="Medical Aid">🏥 Medical</button>
+      <button class="filter-btn" data-filter="Education">📚 Education</button>
+      <button class="filter-btn" data-filter="Community Support">🤝 Community</button>
+    </div>
+
+    <div id="map"></div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <div>© 2025 RedZone Help. All rights reserved.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+
+  /* Coordinates for each location */
+  var LOCATION_COORDS = {
+    "Downtown":    [19.0760, 72.8777],
+    "Central":     [28.6139, 77.2090],
+    "Eastside":    [13.0827, 80.2707],
+    "Northside":   [22.5726, 88.3639],
+    "Southside":   [12.9716, 77.5946],
+    "Riverside":   [17.3850, 78.4867],
+    "Greenwood":   [18.5204, 73.8567],
+    "Uptown":      [23.0225, 72.5714],
+    "Lakeside":    [26.9124, 75.7873],
+    "Riverbank":   [25.5941, 85.1376],
+    "Hillside":    [30.7333, 76.7794],
+    "Seaside":     [15.2993, 74.1240],
+    "Westside":    [21.1458, 79.0882],
+    "Old Town":    [24.5854, 73.7125],
+    "City Center": [26.8467, 80.9462],
+    "North End":   [31.6340, 74.8723],
+    "West End":    [22.3072, 73.1812],
+    "Midtown":     [9.9312, 76.2673],
+    "Highway Zone":[11.0168, 76.9558]
+  };
+
+  var TYPE_COLORS = {
+    "Blood Donation":    "#EF4444",
+    "Disaster Relief":   "#3B82F6",
+    "Medical Aid":       "#22C55E",
+    "Education":         "#A855F7",
+    "Community Support": "#F59E0B"
+  };
+
+  /* Init map */
+  var map = L.map('map').setView([20.5937, 78.9629], 5);
+
+  /* Free OpenStreetMap tiles — no API key needed */
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  /* User location */
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var lat = pos.coords.latitude;
+      var lon = pos.coords.longitude;
+      L.circleMarker([lat, lon], {
+        radius: 8, fillColor: "#F5B700", color: "#fff",
+        weight: 3, opacity: 1, fillOpacity: 1
+      }).addTo(map).bindPopup('<b>📍 You are here</b>');
+    }, function(){}, { enableHighAccuracy: true });
+  }
+
+  var allTaskLayers = [];
+
+  function renderMap(filter){
+    allTaskLayers.forEach(function(l){ map.removeLayer(l); });
+    allTaskLayers = [];
+
+    var tasks = loadTasks();
+
+    tasks.forEach(function(task){
+      if(filter && filter !== 'all' && task.type !== filter) return;
+
+      var coords = LOCATION_COORDS[task.location];
+      if(!coords) return;
+
+      var color = TYPE_COLORS[task.type] || "#94A3B8";
+
+      /* Zone circle */
+      var zone = L.circle(coords, {
+        radius: 25000, color: color, weight: 2,
+        opacity: 0.75, fillColor: color, fillOpacity: 0.18
+      }).addTo(map);
+      allTaskLayers.push(zone);
+
+      /* Center dot */
+      var dot = L.circleMarker(coords, {
+        radius: 7, fillColor: color, color: "#fff",
+        weight: 2, opacity: 1, fillOpacity: 1
+      }).addTo(map);
+
+      dot.bindPopup(
+        '<div style="font-family:Inter,sans-serif; color:#0F172A; min-width:220px;">' +
+          '<div style="font-weight:700; font-size:15px; margin-bottom:8px;">' + task.name + '</div>' +
+          '<div style="font-size:13px; color:#475569; margin-bottom:4px;"><b>Type:</b> ' + task.type + '</div>' +
+          (task.blood ? '<div style="font-size:13px; color:#475569; margin-bottom:4px;"><b>Blood:</b> ' + task.blood + '</div>' : '') +
+          '<div style="font-size:13px; color:#475569; margin-bottom:4px;"><b>Location:</b> ' + task.location + '</div>' +
+          '<div style="font-size:13px; color:#475569; margin-bottom:4px;"><b>Urgency:</b> ' + task.urgency + '</div>' +
+          '<div style="font-size:14px; color:#B45309; font-weight:700; margin:8px 0;">Reward: ₹' + (REWARDS[task.type] || 300) + '</div>' +
+          '<div style="font-size:11px; color:' + color + '; font-weight:700; text-transform:uppercase; letter-spacing:.06em;">' + task.status + '</div>' +
+        '</div>'
+      );
+
+      allTaskLayers.push(dot);
+    });
+  }
+
+  renderMap('all');
+
+  document.querySelectorAll('#mapFilters .filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#mapFilters .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderMap(btn.dataset.filter);
+    });
+  });
+});
+</script>
+</body>
+</html>

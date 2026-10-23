@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — RedZone Help</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left"><span>An initiative for community welfare</span><a href="contact.html">Helpline: 1800-XXX-XXXX</a></div>
+    <div class="topbar-right"><a href="contact.html">Report an Issue</a><a href="#">हिंदी</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-2 4.5-9 9-9 9z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <div class="logo-text"><div class="logo-title">RedZone Help</div><div class="logo-sub">Community Response</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="tasks.html" class="nav-link">Tasks</a>
+      <a href="map.html" class="nav-link">Map</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="signin-link" id="nav-signin">Sign In</a>
+      <div id="nav-user" style="display:none; align-items:center; gap:10px;">
+        <span class="user-name" style="font-weight:600; color:#F1F5F9;"></span>
+        <button onclick="logout()" class="btn btn-outline-dark btn-sm">Logout</button>
+      </div>
+      <button class="menu-toggle" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F1F5F9" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="tasks.html" class="nav-link">Tasks</a>
+    <a href="map.html" class="nav-link">Map</a>
+    <a href="dashboard.html" class="nav-link">Dashboard</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+</header>
+
+<div class="page-head">
+  <h1>Join as a Volunteer</h1>
+  <p>Register to start helping your community and earning rewards</p>
+</div>
+
+<main class="section">
+  <div class="section-inner">
+    <div class="form-card" style="max-width:520px;">
+      <h2 class="form-title">Create Account</h2>
+      <p class="form-sub">Fill in your details below</p>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="Your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" id="reg-phone" class="form-input" placeholder="10-digit phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="Create a password" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location (City / Area)</label>
+          <input type="text" id="reg-location" class="form-input" placeholder="e.g. Mumbai, Andheri" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Blood Group (optional)</label>
+          <select id="reg-blood" class="form-select">
+            <option value="">Prefer not to say</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+
+        <div class="form-actions" style="justify-content:stretch;">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Create Account</button>
+        </div>
+      </form>
+
+      <div class="form-footer">
+        Already have an account? <a href="login.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <div>© 2025 RedZone Help. All rights reserved.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+document.getElementById('register-form').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name = document.getElementById('reg-name').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const location = document.getElementById('reg-location').value.trim();
+  const blood = document.getElementById('reg-blood').value;
+
+  if(!name || !phone || !email || !password || !location){
+    alert('Please fill all required fields.');
+    return;
+  }
+
+  if(phone.length < 10){
+    alert('Please enter a valid 10-digit phone number.');
+    return;
+  }
+
+  const user = {
+    name: name,
+    phone: phone,
+    email: email,
+    location: location,
+    blood: blood,
+    registeredAt: new Date().toISOString()
+  };
+
+  saveUser(user);
+
+  // Reset balance for new user
+  setBalance(0);
+
+  alert('Registration successful! Redirecting to tasks...');
+  window.location.href = 'tasks.html';
+});
+</script>
+</body>
+</html>

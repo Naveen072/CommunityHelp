@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — RedZone Help</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left"><span>An initiative for community welfare</span><a href="contact.html">Helpline: 1800-XXX-XXXX</a></div>
+    <div class="topbar-right"><a href="contact.html">Report an Issue</a><a href="#">हिंदी</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-2 4.5-9 9-9 9z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <div class="logo-text"><div class="logo-title">RedZone Help</div><div class="logo-sub">Community Response</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="tasks.html" class="nav-link">Tasks</a>
+      <a href="map.html" class="nav-link">Map</a>
+      <a href="dashboard.html" class="nav-link active">Dashboard</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="signin-link" id="nav-signin">Sign In</a>
+      <a href="login.html" class="btn btn-gold btn-sm" id="nav-signin-btn">Become a Volunteer</a>
+      <div id="nav-user" style="display:none; align-items:center; gap:10px;">
+        <span class="user-name" style="font-weight:600; color:#F1F5F9;"></span>
+        <button onclick="logout()" class="btn btn-outline-dark btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page-head">
+  <h1>Welcome, <span id="user-name" style="color:#FCD34D;">Volunteer</span> 👋</h1>
+  <p>Track your tasks, rewards, and community impact.</p>
+</div>
+
+<main class="section">
+  <div class="section-inner">
+
+    <div class="cta-band" style="padding:36px 40px; margin-bottom:36px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+      <div style="text-align:left;">
+        <div style="font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#FCD34D; font-weight:600; margin-bottom:8px;">Your Reward Balance</div>
+        <div style="font-family:'Source Serif 4',serif; font-size:44px; font-weight:700; color:#fff; line-height:1;" id="balance">₹0</div>
+        <div style="font-size:14px; color:#CBD5E1; margin-top:8px;">Earned from completed community tasks</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px; color:#CBD5E1; margin-bottom:8px;">Withdraw to your bank account</div>
+        <button onclick="openWithdraw()" class="btn btn-gold">Withdraw Money →</button>
+      </div>
+    </div>
+
+    <div class="dash-stats">
+      <div class="dash-stat"><div class="dash-stat-num" id="total-tasks">0</div><div class="dash-stat-label">Total Tasks</div></div>
+      <div class="dash-stat"><div class="dash-stat-num green" id="completed-tasks">0</div><div class="dash-stat-label">Completed</div></div>
+      <div class="dash-stat"><div class="dash-stat-num blue" id="ongoing-tasks">0</div><div class="dash-stat-label">Ongoing</div></div>
+      <div class="dash-stat"><div class="dash-stat-num gold" id="pending-tasks">0</div><div class="dash-stat-label">Pending</div></div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;" class="dash-cols">
+      <div class="card" style="padding:26px;">
+        <h3 style="font-family:'Inter',sans-serif; font-size:16px; margin-bottom:16px; color:#F1F5F9;">✅ Completed Tasks</h3>
+        <ul class="task-list" id="completed-list"></ul>
+      </div>
+      <div class="card" style="padding:26px;">
+        <h3 style="font-family:'Inter',sans-serif; font-size:16px; margin-bottom:16px; color:#F1F5F9;">⌛ Ongoing Tasks</h3>
+        <ul class="task-list" id="ongoing-list"></ul>
+      </div>
+    </div>
+
+    <div class="card" style="padding:26px; margin-top:24px;">
+      <h3 style="font-family:'Inter',sans-serif; font-size:16px; margin-bottom:16px; color:#F1F5F9;">📋 All Pending Tasks</h3>
+      <ul class="task-list" id="pending-list"></ul>
+    </div>
+
+    <div class="card" style="padding:26px; margin-top:24px;">
+      <h3 style="font-family:'Inter',sans-serif; font-size:16px; margin-bottom:16px; color:#F1F5F9;">💸 Withdrawal History</h3>
+      <ul class="task-list" id="withdraw-list"></ul>
+    </div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <button onclick="resetAll()" class="btn btn-outline-dark btn-sm">Reset All Data (for testing)</button>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <div>© 2025 RedZone Help. All rights reserved.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- Withdraw Modal -->
+<div class="modal-overlay" id="withdraw-modal">
+  <div class="modal-box">
+    <h2 class="modal-title">Withdraw Money</h2>
+    <p class="modal-sub">Transfer your balance to your bank account</p>
+
+    <div style="text-align:center; margin-bottom:24px;">
+      <div style="font-size:13px; color:#94A3B8; margin-bottom:6px;">Available Balance</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:36px; font-weight:700; color:#F5B700;" id="modal-balance">₹0</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Withdraw To</label>
+      <select id="withdraw-method" class="form-select">
+        <option value="UPI">UPI (Google Pay / PhonePe / Paytm)</option>
+        <option value="Bank Transfer">Bank Transfer (NEFT/IMPS)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Amount (₹)</label>
+      <input type="number" id="withdraw-amount" class="form-input" placeholder="Enter amount" min="100">
+    </div>
+
+    <div style="background:rgba(245,183,0,.08); border:1px solid rgba(245,183,0,.25); border-radius:8px; padding:12px 16px; margin-bottom:20px;">
+      <div style="font-size:12.5px; color:#FCD34D; font-weight:600;">ⓘ Minimum withdrawal: ₹100</div>
+      <div style="font-size:12.5px; color:#CBD5E1; margin-top:4px;">Money transfers to your account within 24 hours</div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-outline-dark" onclick="closeWithdraw()">Cancel</button>
+      <button class="btn btn-gold" id="withdraw-confirm-btn">Confirm Withdrawal</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px){
+    .dash-cols{ grid-template-columns:1fr !important; }
+  }
+</style>
+
+<script src="app.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  renderDashboard();
+
+  document.getElementById('withdraw-confirm-btn').addEventListener('click', confirmWithdraw);
+});
+
+function renderDashboard(){
+  var tasks = loadTasks();
+  var user = getUser();
+  var balance = getBalance();
+
+  var nameEl = document.getElementById('user-name');
+  if(user && user.name){ nameEl.textContent = user.name; }
+
+  document.getElementById('balance').textContent = '₹' + balance.toLocaleString('en-IN');
+  document.getElementById('modal-balance').textContent = '₹' + balance.toLocaleString('en-IN');
+
+  var completed = tasks.filter(function(t){ return t.status === 'completed'; });
+  var ongoing = tasks.filter(function(t){ return t.status === 'accepted'; });
+  var pending = tasks.filter(function(t){ return t.status === 'pending'; });
+
+  document.getElementById('total-tasks').textContent = tasks.length;
+  document.getElementById('completed-tasks').textContent = completed.length;
+  document.getElementById('ongoing-tasks').textContent = ongoing.length;
+  document.getElementById('pending-tasks').textContent = pending.length;
+
+  renderList('completed-list', completed, 'status-completed');
+  renderList('ongoing-list', ongoing, 'status-accepted');
+  renderList('pending-list', pending, 'status-pending');
+
+  renderWithdrawals();
+}
+
+function renderList(id, list, pillClass){
+  var el = document.getElementById(id);
+  if(list.length === 0){
+    el.innerHTML = '<li style="color:#94A3B8; font-style:italic;">No tasks here yet.</li>';
+    return;
+  }
+  el.innerHTML = list.map(function(t){
+    return '<li><span>' + t.name + ' <span style="color:#94A3B8; font-size:13px;">· ' + t.location + '</span></span><span class="status-pill ' + pillClass + '">' + t.status + '</span></li>';
+  }).join('');
+}
+
+function renderWithdrawals(){
+  var list = getWithdrawals();
+  var el = document.getElementById('withdraw-list');
+  if(list.length === 0){
+    el.innerHTML = '<li style="color:#94A3B8; font-style:italic;">No withdrawals yet.</li>';
+    return;
+  }
+  el.innerHTML = list.map(function(w){
+    var d = new Date(w.date);
+    var dateStr = d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+    return '<li><span><b style="color:#F5B700;">₹' + w.amount + '</b> · ' + w.method + ' <span style="color:#94A3B8; font-size:13px;">· ' + dateStr + '</span></span><span class="status-pill status-pending">' + w.status + '</span></li>';
+  }).join('');
+}
+
+function openWithdraw(){
+  document.getElementById('modal-balance').textContent = '₹' + getBalance().toLocaleString('en-IN');
+  document.getElementById('withdraw-amount').value = '';
+  document.getElementById('withdraw-modal').classList.add('active');
+}
+
+function closeWithdraw(){
+  document.getElementById('withdraw-modal').classList.remove('active');
+}
+
+function confirmWithdraw(){
+  var amount = Number(document.getElementById('withdraw-amount').value);
+  var method = document.getElementById('withdraw-method').value;
+  var balance = getBalance();
+
+  if(!amount || amount <= 0){
+    alert('Please enter a valid amount.');
+    return;
+  }
+  if(amount < 100){
+    alert('Minimum withdrawal is ₹100.');
+    return;
+  }
+  if(amount > balance){
+    alert('Amount exceeds your balance (₹' + balance + ').');
+    return;
+  }
+
+  addWithdrawal(amount, method);
+  setBalance(balance - amount);
+
+  closeWithdraw();
+  renderDashboard();
+
+  alert('Withdrawal request submitted!\n\nAmount: ₹' + amount + '\nMethod: ' + method + '\n\nMoney will be transferred within 24 hours.');
+}
+
+function resetAll(){
+  if(!confirm('Clear all tasks, user, balance, and withdrawals? This cannot be undone.')) return;
+  localStorage.removeItem(KEYS.tasks);
+  localStorage.removeItem(KEYS.user);
+  localStorage.removeItem(KEYS.balance);
+  localStorage.removeItem('rz_withdrawals');
+  location.reload();
+}
+</script>
+</body>
+</html>
